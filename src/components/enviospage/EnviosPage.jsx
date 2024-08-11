@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { getStock, addShipment, getShipments, updateProduct } from '../../helpers/firebase';
+import { getStock, updateProduct } from '../../helpers/firebase';
 import styles from './EnviosPage.module.css';
 
 const objectives = ['Banco', 'Aeropuerto', 'Triunfo Seguros', 'Cruz del Sur', 'IAF', 'IERIC'];
 
 function EnviosPage() {
   const [products, setProducts] = useState([]);
-  const [shipments, setShipments] = useState([]);
-  const [newShipment, setNewShipment] = useState({ objective: '', items: [] });
+  const [selectedObjective, setSelectedObjective] = useState('');
+  const [selectedItems, setSelectedItems] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState({ product: '', quantity: '' });
 
   useEffect(() => {
     fetchStock();
-    fetchShipments();
   }, []);
 
   const fetchStock = async () => {
@@ -21,38 +20,41 @@ function EnviosPage() {
     setProducts(stockData);
   };
 
-  const fetchShipments = async () => {
-    const shipmentData = await getShipments();
-    setShipments(shipmentData);
-  };
-
   const handleAddProduct = () => {
     if (selectedProduct.product && selectedProduct.quantity) {
-      setNewShipment(prevState => ({
-        ...prevState,
-        items: [...prevState.items, { ...selectedProduct, quantity: Number(selectedProduct.quantity) }]
-      }));
+      setSelectedItems([...selectedItems, { ...selectedProduct, quantity: Number(selectedProduct.quantity) }]);
       setSelectedProduct({ product: '', quantity: '' });
     }
   };
 
-  const handleAddShipment = async () => {
-    if (newShipment.objective && newShipment.items.length > 0) {
-      await addShipment(newShipment);
+  const handleSendItems = async () => {
+    if (selectedItems.length > 0) {
+      const result = await Swal.fire({
+        title: '¿Estás seguro de enviar estos insumos?',
+        text: "No podrás deshacer esta acción.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, enviar',
+        cancelButtonText: 'Cancelar'
+      });
 
-      // Descontar productos del stock
-      for (const item of newShipment.items) {
-        const product = products.find(p => p.name === item.product);
-        if (product) {
-          const newStock = Number(product.quantity) - item.quantity;
-          await updateProduct(product.id, { ...product, quantity: newStock.toString() });
+      if (result.isConfirmed) {
+        // Descontar productos del stock
+        for (const item of selectedItems) {
+          const product = products.find(p => p.name === item.product);
+          if (product) {
+            const newStock = Number(product.quantity) - item.quantity;
+            await updateProduct(product.id, { ...product, quantity: newStock.toString() });
+          }
         }
-      }
 
-      fetchStock(); // Actualizar stock después de envío
-      fetchShipments(); // Actualizar lista de envíos
-      Swal.fire('Envío registrado', '', 'success');
-      setNewShipment({ objective: '', items: [] });
+        fetchStock(); // Actualizar stock después de envío
+
+        Swal.fire('Envío registrado', 'Los insumos han sido descontados del stock.', 'success');
+        setSelectedItems([]); // Limpiar la lista de insumos seleccionados
+      }
+    } else {
+      Swal.fire('Lista vacía', 'No has seleccionado ningún insumo.', 'info');
     }
   };
 
@@ -61,8 +63,8 @@ function EnviosPage() {
       <h1>Gestión de Envíos</h1>
       <div className={styles.form}>
         <select
-          value={newShipment.objective}
-          onChange={(e) => setNewShipment({ ...newShipment, objective: e.target.value })}
+          value={selectedObjective}
+          onChange={(e) => setSelectedObjective(e.target.value)}
         >
           <option value="">Seleccionar Objetivo</option>
           {objectives.map((objective, index) => (
@@ -89,26 +91,13 @@ function EnviosPage() {
           onChange={(e) => setSelectedProduct({ ...selectedProduct, quantity: e.target.value })}
         />
         <button onClick={handleAddProduct}>Agregar Producto</button>
-        <button onClick={handleAddShipment}>Registrar Envío</button>
+        <button onClick={handleSendItems}>Enviar Insumos</button>
       </div>
       <div className={styles.shipmentItems}>
-        {newShipment.items.map((item, index) => (
+        {selectedItems.map((item, index) => (
           <div key={index} className={styles.shipmentItem}>
             <span>{item.product}</span>
             <span>{item.quantity}</span>
-          </div>
-        ))}
-      </div>
-      <div className={styles.shipmentList}>
-        {shipments.map((shipment) => (
-          <div key={shipment.id} className={styles.shipmentItem}>
-            <span>{shipment.objective}</span>
-            {shipment.items && shipment.items.map((item, index) => (
-              <div key={index}>
-                <span>{item.product}</span>
-                <span>{item.quantity}</span>
-              </div>
-            ))}
           </div>
         ))}
       </div>

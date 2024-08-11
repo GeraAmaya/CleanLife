@@ -1,6 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import Swal from 'sweetalert2';
 import styles from './ReportsPage.module.css';
 import { getShipments } from '../../helpers/firebase';
+
+// Importar la imagen desde la carpeta 'public'
+import companyLogo from '../../../img/logo.png';
 
 function ReportsPage() {
   const [objectives, setObjectives] = useState(['Banco', 'Aeropuerto', 'Triunfo Seguros', 'Cruz del Sur', 'IAF', 'IERIC']);
@@ -47,6 +53,48 @@ function ReportsPage() {
     }
   };
 
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+
+    // Añadir la imagen de la empresa
+    const img = new Image();
+    img.src = companyLogo;
+    img.onload = () => {
+      doc.addImage(img, 'PNG', 10, 10, 50, 20); // Ajusta la posición y el tamaño según sea necesario
+
+      // Añadir el texto debajo de la imagen
+      doc.setFontSize(18);
+      doc.text('Reporte de Envíos', 14, 40); // Ajustar la posición del texto para que quede debajo de la imagen
+
+      // Preparar los datos de la tabla
+      const tableData = reportData.map(shipment => ({
+        Objective: shipment.objective,
+        Date: new Date(String(shipment.date)).toLocaleDateString(),
+        Items: shipment.items.map(item => `Producto: ${item.product}, Cantidad: ${item.quantity}`).join('; ')
+      }));
+
+      // Añadir la tabla
+      doc.autoTable({
+        head: [['Objective', 'Date', 'Items']],
+        body: tableData.map(data => [data.Objective, data.Date, data.Items]),
+        startY: 50, // Ajustar la posición para que no solaparse con el texto
+      });
+
+      doc.save('report.pdf');
+    };
+  };
+
+  const handleDeleteReport = () => {
+    setReportData([]);
+    setReportGenerated(false);
+    Swal.fire({
+      icon: 'success',
+      title: 'Reporte eliminado',
+      text: 'El reporte ha sido eliminado exitosamente.',
+      confirmButtonText: 'Aceptar',
+    });
+  };
+
   return (
     <div className={styles.container}>
       <h1>Generar Reportes</h1>
@@ -70,6 +118,12 @@ function ReportsPage() {
           onChange={(e) => setEndDate(e.target.value)}
         />
         <button onClick={handleGenerateReport}>Generar Reporte</button>
+        {reportGenerated && (
+          <>
+            <button onClick={downloadPDF}>Descargar PDF</button>
+            <button onClick={handleDeleteReport}>Eliminar Reporte</button>
+          </>
+        )}
       </div>
       <div className={styles.report}>
         {loading ? (
