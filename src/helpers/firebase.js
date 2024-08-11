@@ -43,7 +43,11 @@ export const deleteProduct = async (id) => {
 // Obtener envíos
 export const getShipments = async () => {
   const shipmentsSnapshot = await getDocs(shipmentsCollection);
-  const shipmentsList = shipmentsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const shipmentsList = shipmentsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+    date: doc.data().date ? new Date(doc.data().date) : null, // Asegurar que el campo date esté presente
+  }));
   return shipmentsList;
 };
 
@@ -51,7 +55,7 @@ export const getShipments = async () => {
 export const addShipment = async (shipment) => {
   await addDoc(shipmentsCollection, {
     ...shipment,
-    date: new Date(shipment.date).toISOString()  // Guardar la fecha en formato ISO
+    date: new Date().toISOString(), // Guardar la fecha en formato ISO
   });
   
   for (const item of shipment.items) {

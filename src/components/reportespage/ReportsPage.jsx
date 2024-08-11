@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './ReportsPage.module.css';
 import { getShipments } from '../../helpers/firebase';
 
@@ -8,39 +8,40 @@ function ReportsPage() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [reportData, setReportData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [reportGenerated, setReportGenerated] = useState(false);
 
   const fetchReportData = async () => {
+    setLoading(true);
     try {
       const allShipments = await getShipments();
-      console.log('All Shipments:', allShipments);
-      
       const filteredShipments = allShipments.filter(shipment => {
-        // Verificar si la fecha existe y es válida
-        if (!shipment.date || isNaN(new Date(shipment.date).getTime())) {
-          console.warn('Envío sin fecha o con fecha inválida:', shipment);
-          return false;
-        }
-
-        const shipmentDate = new Date(shipment.date);
-
-        // Comparar las fechas
+        const shipmentDate = new Date(String(shipment.date).replace(/(\w+) (\d+) (\d+) (\d+:\d+:\d+) GMT([+-]\d+) (\w+)/, (match, day, date, month, time, year, offset) => {
+          return `${year}-${month}-${date}T${time}${offset}:00`;
+        }));
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        end.setDate(end.getDate() + 1); // Agregar un día a la fecha final
         return (
           shipment.objective === selectedObjective &&
-          shipmentDate >= new Date(startDate) &&
-          shipmentDate <= new Date(endDate)
+          shipmentDate >= start &&
+          shipmentDate < end // Notar que uso `<` en lugar de `<=`
         );
       });
-
-      console.log('Filtered Shipments:', filteredShipments);
       setReportData(filteredShipments);
+      setReportGenerated(true);
     } catch (error) {
-      console.error('Error fetching shipments:', error);
+      console.error('Error fetching report data:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleGenerateReport = () => {
+  const handleGenerateReport = async () => {
     if (selectedObjective && startDate && endDate) {
-      fetchReportData();
+      setReportData([]); // Resetear el estado reportData
+      setReportGenerated(false); // Resetear el estado reportGenerated
+      await fetchReportData();
     } else {
       alert('Por favor, seleccione un objetivo y un rango de fechas.');
     }
@@ -71,21 +72,25 @@ function ReportsPage() {
         <button onClick={handleGenerateReport}>Generar Reporte</button>
       </div>
       <div className={styles.report}>
-        {reportData.length > 0 ? (
-          reportData.map((shipment, index) => (
-            <div key={index} className={styles.reportItem}>
-              <h3>{shipment.objective}</h3>
-              <p>Fecha: {shipment.date}</p>
-              {shipment.items.map((item, i) => (
-                <div key={i} className={styles.item}>
-                  <span>Producto: {item.product}</span>
-                  <span>Cantidad: {item.quantity}</span>
-                </div>
-              ))}
-            </div>
-          ))
+        {loading ? (
+          <p>Cargando...</p>
         ) : (
-          <p>No hay datos para mostrar</p>
+          reportGenerated && reportData.length > 0 ? (
+            reportData.map((shipment, index) => (
+              <div key={index} className={styles.reportItem}>
+                <h3>{shipment.objective}</h3>
+                <p>Fecha: {new Date(String(shipment.date)).toLocaleDateString()}</p>
+                {shipment.items.map((item, i) => (
+                  <div key={i} className={styles.item}>
+                    <span>Producto: {item.product}</span>
+                    <span>Cantidad: {item.quantity}</span>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <p>No hay datos para mostrar</p>
+          )
         )}
       </div>
     </div>
