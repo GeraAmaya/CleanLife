@@ -1,0 +1,38 @@
+.container {
+  padding: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form select, .form input, .form button {
+  margin: 5px 0;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.report {
+  display: flex;
+  flex-direction: column;
+}
+
+.reportItem {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.reportItem h3 {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.reportItem div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
