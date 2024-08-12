@@ -37,6 +37,8 @@ button {
   background-color: #007bff;
   color: white;
   cursor: pointer;
+  border-radius: 25px; /* Bordes más redondeados */
+  padding: 8px 16px; /* Tamaño más compacto */
 }
 
 button:hover {
@@ -47,21 +49,29 @@ button:hover {
   width: 100%;
   max-width: 800px;
   margin-top: 20px;
+  padding: 0 10px; /* Alinear con el padding del container */
 }
 
 .productItem, .shipmentItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 8px 16px; /* Espaciado reducido */
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
   transition: all 0.3s ease;
+  background-color: #f9f9f9; /* Fondo claro para contraste */
+}
+
+.productItem span, .shipmentItem span {
+  font-size: 0.9rem; /* Fuente más pequeña */
+  color: #333;
 }
 
 .productItem:hover, .shipmentItem:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f1f1f1; /* Cambio sutil de fondo al hover */
 }
 
 @media (max-width: 768px) {
@@ -73,6 +83,7 @@ button:hover {
   .productItem, .shipmentItem {
     flex-direction: column;
     align-items: flex-start;
+    padding: 8px; /* Ajustar padding para dispositivos pequeños */
   }
 
   .productItem > span, .shipmentItem > span {

@@ -1,16 +1,75 @@
+/* NavBar.module.css */
+body{
+  margin: 0;
+}
 .navbar {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #519adf;
+  padding: 1rem;
+  position: relative;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  
+}
+
+.hamburger .line {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 4px 0;
+  transition: all 0.3s ease;
+}
+
+
+
+@media (max-width: 768px) {
+  .links {
+    display: none;
+    flex-direction: column;
     background-color: #333;
-    padding: 1rem;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
   }
-  
-  .navbar a {
-    color: white;
-    text-decoration: none;
+
+  .links.open {
+    display: flex;
   }
-  
-  .navbar a:hover {
-    text-decoration: underline;
+
+  .hamburger {
+    display: flex;
   }
-  
+
+  .navbar {
+    padding: 1rem 2rem;
+  }
+}
