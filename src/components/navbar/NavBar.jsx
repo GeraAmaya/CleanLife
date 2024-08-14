@@ -1,13 +1,20 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../navbar/NavBar.module.css';
-import LOGO from '../../../img/logo.png'
+import LOGO from '../../../img/logo.png';
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Aquí iría la lógica de deslogueo
+    console.log("Deslogueado exitosamente");
+    navigate('/'); // Redirigir al login después de desloguearse
   };
 
   return (
@@ -18,10 +25,10 @@ function Navbar() {
         </Link>
       </div>
       <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
-        <Link to="/" onClick={toggleMenu}>Inicio</Link>
-        <Link to="/stock" onClick={toggleMenu}>Stock</Link>
-        <Link to="/envios" onClick={toggleMenu}>Envíos</Link>
-        <Link to="/reportes" onClick={toggleMenu}>Reportes</Link>
+        <Link to="/stock" onClick={toggleMenu}>STOCK</Link>
+        <Link to="/envios" onClick={toggleMenu}>ENVÍOS</Link>
+        <Link to="/reportes" onClick={toggleMenu}>REPORTES</Link>
+        <Link to="/login" onClick={() => { handleLogout(); toggleMenu(); }}>CERRAR SESIÓN</Link>
       </div>
       <div className={styles.hamburger} onClick={toggleMenu}>
         <div className={styles.line}></div>

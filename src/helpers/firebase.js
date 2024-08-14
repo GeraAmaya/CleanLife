@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc, updateDoc,query, where, deleteDoc, doc, getDoc, orderBy, limit } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ9jotr0LduSdsanTqcLdItKFpBcbEy6Q",
@@ -67,3 +67,30 @@ export const addShipment = async (shipment) => {
     }
   }
 };
+
+// Envios de EMAIL
+
+export const getLastShipmentDate = async (location) => {
+  const q = query(
+    collection(db, 'shipments'),
+    where('location', '==', location),
+    orderBy('date', 'desc'),
+    limit(1)
+  );
+  const querySnapshot = await getDocs(q);
+  if (!querySnapshot.empty) {
+    return querySnapshot.docs[0].data().date.toDate(); 
+  }
+  return null;
+};
+
+export const addNewShipment = async (shipment) => {
+  await addDoc(collection(db, 'shipments'), {
+    ...shipment,
+    date: new Date(),
+  });
+};
+
+
+
+export { db };
