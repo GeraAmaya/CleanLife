@@ -1,66 +1,109 @@
 .pedidoContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    background-color: #f4f4f4; /* Color de fondo específico para Pedido de Insumos */
-    height: 100%;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4;
+  min-height: 100vh; /* Para asegurar que ocupe toda la pantalla */
+  width: 100%;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.logo {
+  width: 100%;
+  max-width: 250px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  gap: 10px;
+}
+
+select, input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Limita la altura del desplegable de productos y habilita el scroll */
+.formGroup select {
+  max-height: 150px; /* Establece una altura máxima para el dropdown */
+  overflow-y: auto;  /* Habilita el scroll vertical */
+}
+
+button {
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.productList {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.productItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.enviarButton {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 760px) {
+  .formGroup, .productList {
+    max-width: 80%;
+    justify-content: center;
   }
-  
+
   h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 1.2rem;
   }
-  
-  .formGroup {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
-    gap: 10px;
+
+  .logo {
+    max-width: 200px;
   }
-  
+
   select, input {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    font-size: 0.9rem;
+    padding: 8px;
   }
-  
-  button {
-    padding: 10px;
-    font-size: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .productList {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .productItem {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 5px;
-  }
-  
+
   .enviarButton {
     margin-top: 20px;
     width: 100%;
-    max-width: 400px;
+    max-width: 250px;
   }
-  
+}

@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import emailjs from 'emailjs-com';
 import { collection, query, where, getDocs, addDoc, Timestamp } from 'firebase/firestore';
 import { db } from '../../helpers/firebase';
 import styles from './PedidoInsumosPage.module.css';
+import logo from '../../../img/logo.png';  // Importa la imagen de la empresa
 
-const productos = ['Detergente', 'Lavandina', 'Blem', 'Desodorante de ambientes', 'Bolsas'];
-const objetivos = ['Banco Nación-Turbio','Banco Nación- Caleta','Banco Nación- Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'IAF', 'IERIC', 'Tarjeta TDF', 'Aeropuerto', 'Triunfo Seguros', 'CityBus'];
-const localidades = ['Río Gallegos', 'Puerto Santa Cruz', 'Puerto Deseado', '28 de Noviembre', 'Caleta Olivia', 'Perito Moreno', 'Río Turbio'];
+const productos = ['Detergente', 'Lavandina (sobre)', 'CIF Crema', 'Esponja Cocina', 'Esponja de  Acero' ,'Rejilla','Trapode piso', 'Franelas', 'Lustramueble', 'Desodorante de ambientes (sobre)', 'Bolsas 45 x 60', 'Bolsas 60 x 90',  'Bolsas 90 x 110'];
+const objetivos = ['Banco Nación- El Calafate','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto','Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'CityBus'];
 
 function PedidoInsumosPage() {
-  const [pedido, setPedido] = useState({ localidad: '', objetivo: '', productos: [] });
+  const [pedido, setPedido] = useState({ objetivo: '', productos: [] });
   const [productoSeleccionado, setProductoSeleccionado] = useState({ producto: '', cantidad: '' });
   const [puedePedir, setPuedePedir] = useState(true);
   const [diasRestantes, setDiasRestantes] = useState(0);
+  const navigate = useNavigate();  // Hook para la navegación
 
   useEffect(() => {
     const verificarUltimoPedido = async () => {
@@ -50,7 +52,7 @@ function PedidoInsumosPage() {
   };
 
   const enviarPedido = async () => {
-    if (pedido.localidad && pedido.objetivo && pedido.productos.length > 0) {
+    if (pedido.objetivo && pedido.productos.length > 0) {
       if (puedePedir) {
         Swal.fire({
           title: '¿Estás seguro de enviar este pedido?',
@@ -69,12 +71,11 @@ function PedidoInsumosPage() {
             // Enviar el correo
             emailjs.send('service_z3hn3ck', 'template_mdgrcag', {
               product_list: pedido.productos.map(p => `${p.producto}: ${p.cantidad}`).join(', '),
-              objetivo: pedido.objetivo,
-              localidad: pedido.localidad
+              objetivo: pedido.objetivo
             }, '4xS1o3vGTaNk4_RFL');
 
             Swal.fire('Enviado', 'Tu pedido ha sido enviado con éxito.', 'success');
-            setPedido({ localidad: '', objetivo: '', productos: [] });
+            setPedido({ objetivo: '', productos: [] });
           }
         });
       } else {
@@ -85,21 +86,21 @@ function PedidoInsumosPage() {
     }
   };
 
+  const handleLogoClick = () => {
+    navigate('/');  // Navegar a la página de inicio
+  };
+
   return (
     <div className={styles.pedidoContainer}>
+      <img 
+        src={logo} 
+        alt="Imagen de la Empresa" 
+        className={styles.logo} 
+        onClick={handleLogoClick}  // Evento onClick para navegar al inicio
+      />
+      
       <h1>Pedir Insumos</h1>
       <div className={styles.formGroup}>
-        <select
-          value={pedido.localidad}
-          onChange={(e) => setPedido({ ...pedido, localidad: e.target.value })}
-        >
-          <option value="">Seleccionar Localidad</option>
-          {localidades.map((localidad, index) => (
-            <option key={index} value={localidad}>
-              {localidad}
-            </option>
-          ))}
-        </select>
         <select
           value={pedido.objetivo}
           onChange={(e) => setPedido({ ...pedido, objetivo: e.target.value })}
