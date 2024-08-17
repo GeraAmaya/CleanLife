@@ -9,7 +9,6 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
   background-color: #f4f4f4;
   min-height: 100vh; /* Para asegurar que ocupe toda la pantalla */
   width: 100%;
@@ -125,7 +124,7 @@ button:hover {
   }
 
   .logo {
-    max-width: 80%; /* Ajusta el tamaño del logo en pantallas pequeñas */
+    max-width: 60%; /* Ajusta el tamaño del logo en pantallas pequeñas */
   }
 
   select, input {
