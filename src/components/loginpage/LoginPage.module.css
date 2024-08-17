@@ -79,7 +79,7 @@ button:hover {
 @media (max-width: 768px) {
   .loginContainer {
     justify-content: flex-start; /* Asegura que el contenido esté alineado al inicio en pantallas pequeñas */
-    padding-top: 40px; /* Agrega espacio en la parte superior para que el contenido no esté tan pegado al borde superior */
+    padding-top: 50px; /* Agrega espacio en la parte superior para que el contenido no esté tan pegado al borde superior */
   }
 
   .logo {
