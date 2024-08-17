@@ -106,7 +106,7 @@ function PedidoInsumosPage() {
       />
       
       <h1>Pedir Insumos</h1>
-      <p>Tu pedido debe ser para 30 días en Interior.7 días en Rio Gallegos.</p>
+      <p>Tu pedido debe ser para 30 días en Interior</p>
       <div className={styles.formGroup}>
         <select
           value={pedido.objetivo}

@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
-
 html, body {
   overflow-x: hidden; /* Evita el scroll horizontal */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .pedidoContainer {
@@ -13,7 +14,8 @@ html, body {
   min-height: 100vh; /* Para asegurar que ocupe toda la pantalla */
   width: 100%;
   font-weight: 400;
-  overflow-x: hidden; /* Asegura que el contenedor no tenga scroll horizontal */
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 h1 {
@@ -21,6 +23,7 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
   font-family: "Roboto Slab", serif;
+  width: 100%; /* Para que el texto se ajuste dentro del contenedor */
 }
 
 .logo {
@@ -47,12 +50,6 @@ select, input {
   box-sizing: border-box;
 }
 
-/* Limita la altura del desplegable de productos y habilita el scroll */
-.formGroup select {
-  max-height: 150px; /* Establece una altura máxima para el dropdown */
-  overflow-y: auto;  /* Habilita el scroll vertical */
-}
-
 button {
   padding: 10px;
   font-size: 1rem;
@@ -62,7 +59,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
-  box-sizing: border-box;
+  margin-top: 10px; /* Agrega espacio entre botones */
 }
 
 button:hover {
@@ -113,26 +110,26 @@ button:hover {
 }
 
 @media (max-width: 760px) {
-  .formGroup, .productList {
-    max-width: 80%; /* Ajusta el ancho del formulario y la lista de productos en pantallas pequeñas */
-    margin: 10px;
+  .pedidoContainer {
+    padding-left: 15px; /* Margen izquierdo más pequeño en móviles */
+    padding-right: 15px; /* Margen derecho más pequeño en móviles */
   }
 
-  h1{
-   margin-right: 15px;
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .formGroup, .productList, .enviarButton {
+    width: 80%;
+    max-width: 80%; /* Asegura que todo el contenido ocupe el 100% del ancho disponible */
   }
 
   .logo {
-    width: 80%; /* Ajusta el tamaño del logo en pantallas pequeñas */
+    max-width: 80%; /* Ajusta el tamaño del logo en pantallas pequeñas */
   }
 
   select, input {
     font-size: 0.9rem;
     padding: 8px;
   }
-
-  .enviarButton  {
-    max-width: 80%; /* Ajusta el ancho máximo del botón en pantallas pequeñas */
-  }
-  
 }
