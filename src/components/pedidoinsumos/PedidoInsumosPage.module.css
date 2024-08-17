@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
 
+html, body {
+  overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
 .pedidoContainer {
   display: flex;
   flex-direction: column;
@@ -9,6 +13,7 @@
   min-height: 100vh; /* Para asegurar que ocupe toda la pantalla */
   width: 100%;
   font-weight: 400;
+  overflow-x: hidden; /* Asegura que el contenedor no tenga scroll horizontal */
 }
 
 h1 {
@@ -86,12 +91,6 @@ button:hover {
   max-width: 400px;
 }
 
-.productList {
-  margin-top: 20px;
-  width: 100%;
-  max-width: 400px;
-}
-
 .productTable {
   width: 100%;
   border-collapse: collapse;
@@ -114,20 +113,12 @@ button:hover {
 }
 
 @media (max-width: 760px) {
-  .formGroup {
-    max-width: 90%; /* Ajustar el ancho del formulario en pantallas pequeñas */
-  }
-
-  .productList {
-    max-width: 90%; /* Ajustar el ancho de la lista de productos en pantallas pequeñas */
-  }
-
-  h1 {
-    font-size: 1.5rem;
+  .formGroup, .productList {
+    max-width: 100%; /* Ajusta el ancho del formulario y la lista de productos en pantallas pequeñas */
   }
 
   .logo {
-    max-width: 200px;
+    width: 80%; /* Ajusta el tamaño del logo en pantallas pequeñas */
   }
 
   select, input {
@@ -136,8 +127,6 @@ button:hover {
   }
 
   .enviarButton {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 250px;
+    max-width: 100%; /* Ajusta el ancho máximo del botón en pantallas pequeñas */
   }
 }
