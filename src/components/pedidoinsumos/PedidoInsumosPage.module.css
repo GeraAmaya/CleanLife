@@ -36,7 +36,6 @@ h1 {
   width: 100%;
   max-width: 400px;
   gap: 10px;
-  margin: 0 10px; /* Añade márgenes pequeños en los costados */
 }
 
 select, input {
@@ -46,7 +45,6 @@ select, input {
   border-radius: 5px;
   width: 100%;
   box-sizing: border-box;
-  margin: 0 5px; /* Añade márgenes pequeños en los costados */
 }
 
 /* Limita la altura del desplegable de productos y habilita el scroll */
@@ -65,7 +63,6 @@ button {
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
-  margin: 0 5px; /* Añade márgenes pequeños en los costados */
 }
 
 button:hover {
@@ -76,7 +73,6 @@ button:hover {
   margin-top: 20px;
   width: 100%;
   max-width: 400px;
-  margin: 0 10px; /* Añade márgenes pequeños en los costados */
 }
 
 .productItem {
@@ -87,20 +83,17 @@ button:hover {
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 5px;
-  margin: 0 5px; /* Añade márgenes pequeños en los costados */
 }
 
 .enviarButton {
   margin-top: 20px;
   width: 100%;
   max-width: 400px;
-  margin: 0 5px; /* Añade márgenes pequeños en los costados */
 }
 
 .productTable {
   width: 100%;
   border-collapse: collapse;
-  margin: 0 10px; /* Añade márgenes pequeños en los costados */
 }
 
 .productTable th,
@@ -121,8 +114,12 @@ button:hover {
 
 @media (max-width: 760px) {
   .formGroup, .productList {
-    max-width: 100%; /* Ajusta el ancho del formulario y la lista de productos en pantallas pequeñas */
-    margin: 0 5px; /* Mantén los márgenes pequeños en los costados */
+    max-width: 80%; /* Ajusta el ancho del formulario y la lista de productos en pantallas pequeñas */
+    margin: 10px;
+  }
+
+  h1{
+   margin-right: 15px;
   }
 
   .logo {
@@ -134,8 +131,8 @@ button:hover {
     padding: 8px;
   }
 
-  .enviarButton {
-    max-width: 100%; /* Ajusta el ancho máximo del botón en pantallas pequeñas */
-    margin: 0 5px; /* Mantén los márgenes pequeños en los costados */
+  .enviarButton  {
+    max-width: 80%; /* Ajusta el ancho máximo del botón en pantallas pequeñas */
   }
+  
 }
