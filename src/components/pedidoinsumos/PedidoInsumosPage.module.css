@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
 
-
-
 .pedidoContainer {
   display: flex;
   flex-direction: column;
@@ -115,11 +113,13 @@ button:hover {
   background-color: #fff;
 }
 
-
 @media (max-width: 760px) {
-  .formGroup, .productList {
-    max-width: 80%;
-    justify-content: center;
+  .formGroup {
+    max-width: 90%; /* Ajustar el ancho del formulario en pantallas pequeñas */
+  }
+
+  .productList {
+    max-width: 90%; /* Ajustar el ancho de la lista de productos en pantallas pequeñas */
   }
 
   h1 {
