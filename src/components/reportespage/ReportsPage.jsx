@@ -7,6 +7,9 @@ import { getShipments } from '../../helpers/firebase';
 
 // Importar la imagen desde la carpeta 'public'
 import companyLogo from '../../../img/logo.png';
+import GenerateIcon from '../../../img/generate.svg';
+import DownloadIcon from '../../../img/download.svg';
+import DeleteIcon from '../../../img/delete.svg';
 
 function ReportsPage() {
   const [objectives, setObjectives] = useState(['Banco', 'Aeropuerto', 'Triunfo Seguros', 'Cruz del Sur', 'IAF', 'IERIC']);
@@ -21,15 +24,14 @@ function ReportsPage() {
     setLoading(true);
     try {
       const allShipments = await getShipments();
-  
+
       const filteredShipments = allShipments.filter(shipment => {
         const shipmentDate = new Date(shipment.date);
-  
-        // Normalizar las fechas para eliminar la parte de la hora
+
         const normalizeDate = (date) => {
           const newDate = new Date(date);
           if (date === endDate) {
-            newDate.setDate(newDate.getDate() + 1); // Agregar un día a la fecha de fin
+            newDate.setDate(newDate.getDate() + 1);
           }
           newDate.setHours(0, 0, 0, 0);
           return newDate;
@@ -37,33 +39,22 @@ function ReportsPage() {
         const start = normalizeDate(startDate);
         const end = normalizeDate(endDate);
         const shipmentNormalizedDate = normalizeDate(shipmentDate);
-  
-        console.log('Fecha de envío:', shipmentNormalizedDate);
-        console.log('Fecha de inicio:', start);
-        console.log('Fecha de fin:', end);
-  
+
         return (
           shipment.objective === selectedObjective &&
           shipmentNormalizedDate >= start &&
           shipmentNormalizedDate <= end
         );
       });
-  
-      
-  
+
       setReportData(filteredShipments);
       setReportGenerated(true);
     } catch (error) {
-      
+      console.error('Error fetching report data:', error);
     } finally {
       setLoading(false);
     }
   };
-  
-  
-  
-  
-
 
   const handleGenerateReport = async () => {
     if (selectedObjective && startDate && endDate) {
@@ -106,7 +97,7 @@ function ReportsPage() {
       doc.autoTable({
         head: [['Objective', 'Date', 'Product', 'Quantity']],
         body: tableData.flat(),
-        startY: 50, // Ajustar la posición para que no solaparse con el texto
+        startY: 50, // Ajustar la posición para que no se solape con el texto
       });
     
       doc.save('report.pdf');
@@ -146,13 +137,21 @@ function ReportsPage() {
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
-        <button onClick={handleGenerateReport}>Generar Reporte</button>
-        {reportGenerated && (
-          <>
-            <button onClick={downloadPDF}>Descargar PDF</button>
-            <button onClick={handleDeleteReport}>Eliminar Reporte</button>
-          </>
-        )}
+        <div className={styles.buttonContainer}>
+          <button className={styles.button} onClick={handleGenerateReport}>
+            <img src={GenerateIcon} alt="Generar Reporte" className={styles.icon} />
+          </button>
+          {reportGenerated && (
+            <>
+              <button className={styles.button} onClick={downloadPDF}>
+                <img src={DownloadIcon} alt="Descargar PDF" className={styles.icon} />
+              </button>
+              <button className={styles.button} onClick={handleDeleteReport}>
+                <img src={DeleteIcon} alt="Eliminar Reporte" className={styles.icon} />
+              </button>
+            </>
+          )}
+        </div>
       </div>
       <div className={styles.report}>
         {loading ? (

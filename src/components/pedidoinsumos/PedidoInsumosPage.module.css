@@ -88,6 +88,34 @@ button:hover {
   max-width: 400px;
 }
 
+.productList {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.productTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.productTable th,
+.productTable td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+.productTable th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.productTable td {
+  background-color: #fff;
+}
+
+
 @media (max-width: 760px) {
   .formGroup, .productList {
     max-width: 80%;

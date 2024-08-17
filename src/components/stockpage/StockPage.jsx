@@ -49,7 +49,7 @@ function StockPage() {
 
   return (
     <div className={styles.container}>
-      <h1>Gestión de Stock</h1>
+      <h1>Gestión de Stock en Deposito</h1>
       <div className={styles.form}>
         <input
           type="text"

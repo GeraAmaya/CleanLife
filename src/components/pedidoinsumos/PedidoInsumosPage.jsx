@@ -139,11 +139,24 @@ function PedidoInsumosPage() {
         <button onClick={agregarProducto}>Agregar Producto</button>
       </div>
       <div className={styles.productList}>
-        {pedido.productos.map((item, index) => (
-          <div key={index} className={styles.productItem}>
-            {item.producto} - {item.cantidad}
-          </div>
-        ))}
+        {pedido.productos.length > 0 && (
+          <table className={styles.productTable}>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pedido.productos.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.producto}</td>
+                  <td>{item.cantidad}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <button className={styles.enviarButton} onClick={enviarPedido}>Enviar Pedido</button>
     </div>
