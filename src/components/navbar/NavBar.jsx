@@ -26,7 +26,7 @@ function Navbar() {
       </div>
       <div className={`${styles.links} ${isOpen ? styles.open : ''}`}>
         <Link to="/stock" onClick={toggleMenu}>STOCK</Link>
-        <Link to="/envios" onClick={toggleMenu}>ENVÍOS</Link>
+        <Link to="/envios" onClick={toggleMenu}>SALIDA</Link>
         <Link to="/reportes" onClick={toggleMenu}>REPORTES</Link>
         <Link to="/login" onClick={() => { handleLogout(); toggleMenu(); }}>CERRAR SESIÓN</Link>
       </div>

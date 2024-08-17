@@ -1,18 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
+
+
 .loginContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-family: "Roboto Slab", serif;
     height: 100vh;
     padding: 20px;
     background: #6190E8;
     background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8);
     background: linear-gradient(to right, #A7BFE8, #6190E8);
+    
   }
   
   .logo {
     width: 350px;
     margin-bottom: 10px;
+    top: 1;
   }
   
   h1 {

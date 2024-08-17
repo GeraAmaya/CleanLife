@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import styles from './StockPage.module.css';
 import Swal from 'sweetalert2';
 import { getStock, addProduct, updateProduct, deleteProduct } from '../../helpers/firebase';
+import editIcon from '../../../img/edit.svg';
+import deleteIcon from '../../../img/delete.svg';
 
 function StockPage() {
   const [products, setProducts] = useState([]);
@@ -82,15 +84,28 @@ function StockPage() {
           </>
         )}
       </div>
-      <div className={styles.stockList}>
-        {products.map((product) => (
-          <div key={product.id} className={styles.productItem}>
-            <span>{product.name}</span>
-            <span>{product.quantity}</span>
-            <button onClick={() => handleEditClick(product)}>Editar</button>
-            <button onClick={() => handleDeleteProduct(product.id)}>Eliminar</button>
-          </div>
-        ))}
+      <div className={styles.stockTable}>
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td>{product.name}</td>
+                <td>{product.quantity}</td>
+                <td>
+                      <img src={editIcon} alt="Editar" onClick={() => handleEditClick(product)} className={styles.icon} />
+                      <img src={deleteIcon} alt="Eliminar" onClick={() => handleDeleteProduct(product.id)} className={styles.icon} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

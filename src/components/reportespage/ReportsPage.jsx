@@ -21,27 +21,49 @@ function ReportsPage() {
     setLoading(true);
     try {
       const allShipments = await getShipments();
+  
       const filteredShipments = allShipments.filter(shipment => {
-        const shipmentDate = new Date(String(shipment.date).replace(/(\w+) (\d+) (\d+) (\d+:\d+:\d+) GMT([+-]\d+) (\w+)/, (match, day, date, month, time, year, offset) => {
-          return `${year}-${month}-${date}T${time}${offset}:00`;
-        }));
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        end.setDate(end.getDate() + 1); // Agregar un día a la fecha final
+        const shipmentDate = new Date(shipment.date);
+  
+        // Normalizar las fechas para eliminar la parte de la hora
+        const normalizeDate = (date) => {
+          const newDate = new Date(date);
+          if (date === endDate) {
+            newDate.setDate(newDate.getDate() + 1); // Agregar un día a la fecha de fin
+          }
+          newDate.setHours(0, 0, 0, 0);
+          return newDate;
+        };
+        const start = normalizeDate(startDate);
+        const end = normalizeDate(endDate);
+        const shipmentNormalizedDate = normalizeDate(shipmentDate);
+  
+        console.log('Fecha de envío:', shipmentNormalizedDate);
+        console.log('Fecha de inicio:', start);
+        console.log('Fecha de fin:', end);
+  
         return (
           shipment.objective === selectedObjective &&
-          shipmentDate >= start &&
-          shipmentDate < end // Notar que uso `<` en lugar de `<=`
+          shipmentNormalizedDate >= start &&
+          shipmentNormalizedDate <= end
         );
       });
+  
+      
+  
       setReportData(filteredShipments);
       setReportGenerated(true);
     } catch (error) {
-      console.error('Error fetching report data:', error);
+      
     } finally {
       setLoading(false);
     }
   };
+  
+  
+  
+  
+
 
   const handleGenerateReport = async () => {
     if (selectedObjective && startDate && endDate) {
@@ -67,19 +89,26 @@ function ReportsPage() {
       doc.text('Reporte de Envíos', 14, 40); // Ajustar la posición del texto para que quede debajo de la imagen
 
       // Preparar los datos de la tabla
-      const tableData = reportData.map(shipment => ({
-        Objective: shipment.objective,
-        Date: new Date(String(shipment.date)).toLocaleDateString(),
-        Items: shipment.items.map(item => `Producto: ${item.product}, Cantidad: ${item.quantity}`).join('; ')
-      }));
+      const tableData = reportData.map(shipment => {
+        const rows = [];
+        shipment.items.forEach(item => {
+          rows.push([
+            shipment.objective,
+            new Date(String(shipment.date)).toLocaleDateString(),
+            `Producto: ${item.product}`,
+            `Cantidad: ${item.quantity}`,
+          ]);
+        });
+        return rows;
+      });
 
       // Añadir la tabla
       doc.autoTable({
-        head: [['Objective', 'Date', 'Items']],
-        body: tableData.map(data => [data.Objective, data.Date, data.Items]),
+        head: [['Objective', 'Date', 'Product', 'Quantity']],
+        body: tableData.flat(),
         startY: 50, // Ajustar la posición para que no solaparse con el texto
       });
-
+    
       doc.save('report.pdf');
     };
   };

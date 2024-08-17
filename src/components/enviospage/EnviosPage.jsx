@@ -21,9 +21,10 @@ function EnviosPage() {
 
   const handleAddProduct = () => {
     if (selectedProduct.product && selectedProduct.quantity) {
+      const product = products.find(p => p.name === selectedProduct.product);
       setNewShipment(prevState => ({
         ...prevState,
-        items: [...prevState.items, { ...selectedProduct, quantity: Number(selectedProduct.quantity) }]
+        items: [...prevState.items, { id: product.id, name: product.name, quantity: Number(selectedProduct.quantity) }]
       }));
       setSelectedProduct({ product: '', quantity: '' });
     }
@@ -31,30 +32,52 @@ function EnviosPage() {
 
   const handleAddShipment = async () => {
     if (newShipment.objective && newShipment.items.length > 0) {
-      const result = await Swal.fire({
-        title: '¿Estás seguro de enviar estos insumos?',
-        text: "No podrás deshacer esta acción.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí, enviar',
-        cancelButtonText: 'Cancelar'
-      });
+      let isStockAvailable = true;
 
-      if (result.isConfirmed) {
-        await addShipment(newShipment);
-
-        // Descontar productos del stock
-        for (const item of newShipment.items) {
-          const product = products.find(p => p.name === item.product);
-          if (product) {
-            const newStock = Number(product.quantity) - item.quantity;
-            await updateProduct(product.id, { ...product, quantity: newStock.toString() });
-          }
+      // Verificar stock disponible
+      for (const item of newShipment.items) {
+        const product = products.find(p => p.name === item.name);
+        if (product.quantity < item.quantity) {
+          isStockAvailable = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Sin Stock',
+            text: `No hay suficiente stock de ${product.name}. Solo quedan ${product.quantity} unidades.`,
+          });
+          break;
         }
+      }
 
-        fetchStock(); // Actualizar stock después de envío
-        Swal.fire('Envío registrado', 'Los insumos han sido descontados del stock.', 'success');
-        setNewShipment({ objective: '', items: [] });
+      if (isStockAvailable) {
+        const result = await Swal.fire({
+          title: '¿Estás seguro de enviar estos insumos?',
+          text: "No podrás deshacer esta acción.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Sí, enviar',
+          cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+          // Descontar productos del stock
+          for (const item of newShipment.items) {
+            const product = products.find(p => p.name === item.name);
+            if (product) {
+              const newStock = Number(product.quantity) - item.quantity;
+              await updateProduct(product.id, { ...product, quantity: newStock });
+            }
+          }
+
+          // Registrar el envío
+          await addShipment(newShipment);
+
+          // Actualizar el stock y resetear el formulario
+          await fetchStock();
+          setNewShipment({ objective: '', items: [] });
+          setSelectedProduct({ product: '', quantity: '' });
+
+          Swal.fire('Envío registrado', 'Los insumos han sido descontados del stock.', 'success');
+        }
       }
     } else {
       Swal.fire('Formulario incompleto', 'Debes seleccionar un objetivo y agregar al menos un producto.', 'warning');
@@ -99,7 +122,7 @@ function EnviosPage() {
       <div className={styles.shipmentItems}>
         {newShipment.items.map((item, index) => (
           <div key={index} className={styles.shipmentItem}>
-            <span>{item.product}</span>
+            <span>{item.name}</span>
             <span>{item.quantity}</span>
           </div>
         ))}

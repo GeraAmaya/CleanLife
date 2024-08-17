@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
+
+
 .pedidoContainer {
   display: flex;
   flex-direction: column;
@@ -6,12 +10,14 @@
   background-color: #f4f4f4;
   min-height: 100vh; /* Para asegurar que ocupe toda la pantalla */
   width: 100%;
+  font-weight: 400;
 }
 
 h1 {
   font-size: 2rem;
   margin-bottom: 20px;
   text-align: center;
+  font-family: "Roboto Slab", serif;
 }
 
 .logo {
@@ -89,7 +95,7 @@ button:hover {
   }
 
   h1 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   .logo {

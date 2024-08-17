@@ -1,5 +1,18 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc, updateDoc,query, where, deleteDoc, doc, getDoc, orderBy, limit } from 'firebase/firestore';
+import { 
+  getFirestore, 
+  collection, 
+  getDocs, 
+  addDoc, 
+  updateDoc, 
+  query, 
+  where, 
+  deleteDoc, 
+  doc, 
+  getDoc, 
+  orderBy, 
+  limit 
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCJ9jotr0LduSdsanTqcLdItKFpBcbEy6Q",
@@ -31,7 +44,12 @@ export const addProduct = async (product) => {
 // Actualizar producto
 export const updateProduct = async (id, updatedProduct) => {
   const productDoc = doc(db, 'stock', id);
-  await updateDoc(productDoc, updatedProduct);
+  const product = (await getDoc(productDoc)).data();
+  if (product) {
+    await updateDoc(productDoc, updatedProduct);
+  } else {
+    console.error(`El producto con id ${id} no existe en el stock`);
+  }
 };
 
 // Eliminar producto
@@ -51,25 +69,40 @@ export const getShipments = async () => {
   return shipmentsList;
 };
 
-// Agregar envío
+// Agregar envío y actualizar stock
 export const addShipment = async (shipment) => {
-  await addDoc(shipmentsCollection, {
-    ...shipment,
-    date: new Date().toISOString(), // Guardar la fecha en formato ISO
-  });
-  
-  for (const item of shipment.items) {
-    const stockItemDoc = doc(db, 'stock', item.id);
-    const stockItem = (await getDoc(stockItemDoc)).data();
-    if (stockItem) {
-      const newQuantity = stockItem.quantity - item.quantity;
-      await updateDoc(stockItemDoc, { quantity: newQuantity });
+  try {
+    const shipmentRef = await addDoc(shipmentsCollection, {
+      ...shipment,
+      date: new Date().toISOString(),
+    });
+
+    console.log("Envío agregado con ID:", shipmentRef.id);
+
+    // Actualizar stock
+    for (const item of shipment.items) {
+      const stockItemDoc = doc(db, 'stock', item.id);
+      const stockItem = (await getDoc(stockItemDoc)).data();
+      if (stockItem) {
+        if (stockItem.quantity >= item.quantity) {
+          const newQuantity = stockItem.quantity - item.quantity;
+          await updateDoc(stockItemDoc, { quantity: newQuantity });
+        } else {
+          console.error(`No hay suficiente stock para el producto ${item.product}`);
+        }
+      } else {
+        console.error(`El producto ${item.product} no existe en el stock`);
+      }
     }
+
+  } catch (error) {
+    console.error("Error al agregar el envío:", error);
+    throw error;
   }
 };
 
-// Envios de EMAIL
 
+// Obtener la fecha del último envío para una ubicación específica
 export const getLastShipmentDate = async (location) => {
   const q = query(
     collection(db, 'shipments'),
@@ -79,18 +112,17 @@ export const getLastShipmentDate = async (location) => {
   );
   const querySnapshot = await getDocs(q);
   if (!querySnapshot.empty) {
-    return querySnapshot.docs[0].data().date.toDate(); 
+    return querySnapshot.docs[0].data().date.toDate(); // Asegurar que la fecha se maneje correctamente
   }
   return null;
 };
 
+// Agregar un nuevo envío con manejo automático de ID
 export const addNewShipment = async (shipment) => {
   await addDoc(collection(db, 'shipments'), {
     ...shipment,
-    date: new Date(),
+    date: new Date(), // Guardar la fecha como un objeto Date
   });
 };
-
-
 
 export { db };
