@@ -3,18 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import logo from '../../../img/logo.png'; 
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica de autenticación con el email y la contraseña predeterminados
-    const defaultEmail = 'gamaya@cleanlif.com.ar';
-    const defaultPassword = '123456';
+    const isAuthenticated = onLogin(email, password);
 
-    if (email === defaultEmail && password === defaultPassword) {
+    if (isAuthenticated) {
       navigate('/stock');
     } else {
       alert('Credenciales incorrectas');

@@ -28,7 +28,7 @@ function Navbar() {
         <Link to="/stock" onClick={toggleMenu}>STOCK</Link>
         <Link to="/envios" onClick={toggleMenu}>SALIDA</Link>
         <Link to="/reportes" onClick={toggleMenu}>REPORTES</Link>
-        <Link to="/login" onClick={() => { handleLogout(); toggleMenu(); }}>CERRAR SESIÓN</Link>
+        <Link to="/" onClick={() => { handleLogout(); toggleMenu(); }}>CERRAR SESIÓN</Link>
       </div>
       <div className={styles.hamburger} onClick={toggleMenu}>
         <div className={styles.line}></div>
