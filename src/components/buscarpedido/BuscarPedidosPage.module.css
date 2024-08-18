@@ -1,0 +1,141 @@
+.buscarPedidosContainer {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 15px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.filtroContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filtroContainer select,
+.filtroContainer input[type="date"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filtroContainer input[type="date"]::before {
+  content: attr(placeholder);
+  color: #999;
+  margin-right: 10px;
+}
+
+.filtroContainer input[type="date"]:focus::before,
+.filtroContainer input[type="date"]:valid::before {
+  content: "";
+}
+
+.pedidosList {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pedidosTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.pedidosTable th,
+.pedidosTable td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.pedidosTable th {
+  background-color: #f8f8f8;
+  color: #555;
+}
+
+.pedidosTable td ul {
+  padding-left: 20px;
+  margin: 0;
+  list-style-type: disc;
+}
+
+.pedidosTable td ul li {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.downloadButton {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ff6347;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+.downloadButton:hover {
+  background-color: #e5533c;
+}
+
+.icons{
+  width: 40px;
+}
+
+@media (max-width: 768px) {
+  .filtroContainer {
+    flex-direction: column;
+  }
+
+  .buscarPedidosContainer {
+    padding: 15px;
+  }
+
+  .pedidosTable th,
+  .pedidosTable td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+  .icons{
+    width: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pedidosTable th,
+  .pedidosTable td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+
+  .downloadButton {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+  }
+  .icons{
+    width: 30px;
+  }
+}

@@ -1,4 +1,6 @@
-/* NavBar.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+
+
 body{
   margin: 0;
 }
@@ -7,21 +9,23 @@ body{
   justify-content: space-between;
   align-items: center;
   background-color: #519adf;
+  font-family: "Roboto Slab", serif;
   padding: 1rem;
   position: relative;
 }
 
 .logo img {
-  height: 50px;
+  height: 80px;
 }
 
 .links {
   display: flex;
   gap: 1rem;
+  text-decoration: none;
 }
 
 .links a {
-  color: white;
+  color: rgb(29, 27, 27);
   text-decoration: none;
   font-weight: bold;
 }
@@ -29,6 +33,13 @@ body{
 .links a:hover {
   text-decoration: underline;
 }
+
+.links a.active {
+  font-weight: bold;
+  color: #f3f3f2;
+  text-decoration: none;
+}
+
 
 .hamburger {
   display: none;
