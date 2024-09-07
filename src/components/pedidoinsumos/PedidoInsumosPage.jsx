@@ -7,8 +7,8 @@ import { db } from '../../helpers/firebase';
 import styles from './PedidoInsumosPage.module.css';
 import logo from '../../../img/logo.png';
 
-const productos = ['Detergente', 'Lavandina (sobre)', 'CIF Crema', 'Esponja Cocina', 'Esponja de Acero', 'Rejilla', 'Trapode piso', 'Franelas', 'Lustramueble', 'Desodorante de ambientes (sobre)', 'Bolsas 45 x 60', 'Bolsas 60 x 90', 'Bolsas 90 x 110'];
-const objetivos = ['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto','Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
+const productos = ['Detergente', 'Lavandina (Sobre)','Lavandina Gel','Limpia Vidrio (Sobre)','Desengrasante (Sobre)','Jabón Liquido', 'CIF Crema','Lisoform', 'Esponja Cocina', 'Esponja de Acero','Liquido para piso (Sobre)', 'Liquido Limp. Aeronautico', 'Rejillas', 'Trapos de piso', 'Franelas', 'Lustramueble', 'Desodorante de ambientes','Papel Higienico X UNID.','Papel - Bobina', 'Papel Cervilleta', 'Bolsas 45 x 60', 'Bolsas 60 x 90', 'Bolsas 90 x 110', 'Bolsas Cristal 90 x 110', 'Balde', 'Balde con escurridor','Escobillon', 'Pala plastica','Mopa','Cabo de Madera','Cera Roja','Cera Natural','Guantes Talle G','Guantes Talle M','Plumero','Ambo Talle M','Ambo Talle L','Ambo Talle S','Ambo Talle XL','Buzo Talle XL','Buzo Talle L','Buzo Talle M','Buzo Talle S'];
+const objetivos = ['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'ARSA - Aeropuerto', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
 const objetivos7Dias = ['Banco Nación- Rio Gallegos','Triunfo Seguros','IAF', 'IERIC', 'Aeropuerto', 'Enargas']; // Objetivos con pedidos cada 7 días
 
 function PedidoInsumosPage() {
@@ -106,7 +106,7 @@ function PedidoInsumosPage() {
       />
       
       <h1>Pedir Insumos</h1>
-      <p>Tu pedido debe ser para 30 días en Interior</p>
+      <p>Tu pedido debe ser para 30 días en Interior y estara sujeto a Stock disponible</p>
       <div className={styles.formGroup}>
         <select
           value={pedido.objetivo}

@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { getStock, addShipment, updateProduct } from '../../helpers/firebase';
 import styles from './EnviosPage.module.css';
 
-const objectives = ['Banco', 'Aeropuerto', 'Triunfo Seguros', 'Cruz del Sur', 'IAF', 'IERIC'];
+const objectives = ['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'ARSA - Aeropuerto', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
 
 function EnviosPage() {
   const [products, setProducts] = useState([]);
@@ -24,7 +24,7 @@ function EnviosPage() {
       const product = products.find(p => p.name === selectedProduct.product);
       setNewShipment(prevState => ({
         ...prevState,
-        items: [...prevState.items, { id: product.id, name: product.name, quantity: Number(selectedProduct.quantity) }]
+        items: [...prevState.items, { id: product.id, product: product.name, quantity: Number(selectedProduct.quantity) }]
       }));
       setSelectedProduct({ product: '', quantity: '' });
     }
@@ -34,9 +34,8 @@ function EnviosPage() {
     if (newShipment.objective && newShipment.items.length > 0) {
       let isStockAvailable = true;
 
-      // Verificar stock disponible
       for (const item of newShipment.items) {
-        const product = products.find(p => p.name === item.name);
+        const product = products.find(p => p.name === item.product);
         if (product.quantity < item.quantity) {
           isStockAvailable = false;
           Swal.fire({
@@ -59,19 +58,16 @@ function EnviosPage() {
         });
 
         if (result.isConfirmed) {
-          // Descontar productos del stock
           for (const item of newShipment.items) {
-            const product = products.find(p => p.name === item.name);
+            const product = products.find(p => p.name === item.product);
             if (product) {
               const newStock = Number(product.quantity) - item.quantity;
               await updateProduct(product.id, { ...product, quantity: newStock });
             }
           }
 
-          // Registrar el envío
           await addShipment(newShipment);
 
-          // Actualizar el stock y resetear el formulario
           await fetchStock();
           setNewShipment({ objective: '', items: [] });
           setSelectedProduct({ product: '', quantity: '' });
@@ -122,7 +118,7 @@ function EnviosPage() {
       <div className={styles.shipmentItems}>
         {newShipment.items.map((item, index) => (
           <div key={index} className={styles.shipmentItem}>
-            <span>{item.name}</span>
+            <span>{item.product}</span>
             <span>{item.quantity}</span>
           </div>
         ))}

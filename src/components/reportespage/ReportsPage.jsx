@@ -12,7 +12,7 @@ import DownloadIcon from '../../../img/download.svg';
 import DeleteIcon from '../../../img/delete.svg';
 
 function ReportsPage() {
-  const [objectives, setObjectives] = useState(['Banco', 'Aeropuerto', 'Triunfo Seguros', 'Cruz del Sur', 'IAF', 'IERIC']);
+  const [objectives, setObjectives] = useState(['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto','Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas']);
   const [selectedObjective, setSelectedObjective] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -68,17 +68,17 @@ function ReportsPage() {
 
   const downloadPDF = () => {
     const doc = new jsPDF();
-
+  
     // Añadir la imagen de la empresa
     const img = new Image();
     img.src = companyLogo;
     img.onload = () => {
       doc.addImage(img, 'PNG', 10, 10, 50, 20); // Ajusta la posición y el tamaño según sea necesario
-
+  
       // Añadir el texto debajo de la imagen
       doc.setFontSize(18);
       doc.text('Reporte de Envíos', 14, 40); // Ajustar la posición del texto para que quede debajo de la imagen
-
+  
       // Preparar los datos de la tabla
       const tableData = reportData.map(shipment => {
         const rows = [];
@@ -92,7 +92,7 @@ function ReportsPage() {
         });
         return rows;
       });
-
+  
       // Añadir la tabla
       doc.autoTable({
         head: [['Objective', 'Date', 'Product', 'Quantity']],
