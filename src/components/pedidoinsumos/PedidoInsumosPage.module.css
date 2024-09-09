@@ -110,6 +110,29 @@ button:hover {
   background-color: #fff;
 }
 
+.textArea {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: none;
+  height: 100px;
+}
+
+.enviarButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+
 @media (max-width: 760px) {
   .pedidoContainer {
     padding-left: 15px; /* Margen izquierdo más pequeño en móviles */

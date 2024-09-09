@@ -7,12 +7,12 @@ import { db } from '../../helpers/firebase';
 import styles from './PedidoInsumosPage.module.css';
 import logo from '../../../img/logo.png';
 
-const productos = ['Detergente', 'Lavandina (Sobre)','Lavandina Gel','Limpia Vidrio (Sobre)','Desengrasante (Sobre)','Jabón Liquido', 'CIF Crema','Lisoform', 'Esponja Cocina', 'Esponja de Acero','Liquido para piso (Sobre)', 'Liquido Limp. Aeronautico', 'Rejillas', 'Trapos de piso', 'Franelas', 'Lustramueble', 'Desodorante de ambientes','Papel Higienico X UNID.','Papel - Bobina', 'Papel Cervilleta', 'Bolsas 45 x 60', 'Bolsas 60 x 90', 'Bolsas 90 x 110', 'Bolsas Cristal 90 x 110', 'Balde', 'Balde con escurridor','Escobillon', 'Pala plastica','Mopa','Cabo de Madera','Cera Roja','Cera Natural','Guantes Talle G','Guantes Talle M','Plumero','Ambo Talle M','Ambo Talle L','Ambo Talle S','Ambo Talle XL','Buzo Talle XL','Buzo Talle L','Buzo Talle M','Buzo Talle S'];
-const objetivos = ['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'ARSA - Aeropuerto', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
-const objetivos7Dias = ['Banco Nación- Rio Gallegos','Triunfo Seguros','IAF', 'IERIC', 'Aeropuerto', 'Enargas']; // Objetivos con pedidos cada 7 días
+const productos = ['Detergente', 'Lavandina (Sobre)', 'Lavandina Gel', 'Limpia Vidrio (Sobre)', 'Desengrasante (Sobre)', 'Jabón Liquido', 'CIF Crema', 'Lisoform', 'Esponja Cocina', 'Esponja de Acero', 'Liquido para piso (Sobre)', 'Liquido Limp. Aeronautico', 'Rejillas', 'Trapos de piso', 'Franelas', 'Lustramueble', 'Desodorante de ambientes', 'Papel Higienico X UNID.', 'Papel - Bobina', 'Papel Cervilleta', 'Bolsas 45 x 60', 'Bolsas 60 x 90', 'Bolsas 90 x 110', 'Bolsas Cristal 90 x 110', 'Balde', 'Balde con escurridor', 'Escobillon', 'Pala plastica', 'Mopa', 'Cabo de Madera', 'Cera Roja', 'Cera Natural', 'Guantes Talle G', 'Guantes Talle M', 'Plumero', 'Ambo Talle M', 'Ambo Talle L', 'Ambo Talle S', 'Ambo Talle XL', 'Buzo Talle XL', 'Buzo Talle L', 'Buzo Talle M', 'Buzo Talle S'];
+const objetivos = ['Banco Nación- El Calafate', 'Banco Nación- Rio Gallegos', 'Banco Nación- Rio Turbio', 'Banco Nación- Caleta Olivia', 'Banco Nación- P.Deseado', 'Banco Nación- Las Heras', 'Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'Banco Nación - Piedra Buena', 'Banco Nación - Pico Truncado', 'Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'ARSA - Aeropuerto', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
+const objetivos7Dias = ['Banco Nación- Rio Gallegos', 'Triunfo Seguros', 'IAF', 'IERIC', 'Aeropuerto', 'Enargas']; // Objetivos con pedidos cada 7 días
 
 function PedidoInsumosPage() {
-  const [pedido, setPedido] = useState({ objetivo: '', productos: [] });
+  const [pedido, setPedido] = useState({ objetivo: '', productos: [], nota: '' });
   const [productoSeleccionado, setProductoSeleccionado] = useState({ producto: '', cantidad: '' });
   const [puedePedir, setPuedePedir] = useState(true);
   const [diasRestantes, setDiasRestantes] = useState(0);
@@ -75,13 +75,14 @@ function PedidoInsumosPage() {
             const emailData = {
               localidad: pedido.localidad,
               objetivo: pedido.objetivo,
-              productos: pedido.productos.map(p => `<li>Producto: ${p.producto}, Cantidad: ${p.cantidad}</li>`).join('')
+              productos: pedido.productos.map(p => `<li>Producto: ${p.producto}, Cantidad: ${p.cantidad}</li>`).join(''),
+              nota: pedido.nota // Añadir la nota al email
             };
 
             emailjs.send('service_z3hn3ck', 'template_mdgrcag', emailData, '4xS1o3vGTaNk4_RFL');
 
             Swal.fire('Enviado', 'Tu pedido ha sido enviado con éxito.', 'success');
-            setPedido({ objetivo: '', productos: [] });
+            setPedido({ objetivo: '', productos: [], nota: '' });
           }
         });
       } else {
@@ -106,7 +107,7 @@ function PedidoInsumosPage() {
       />
       
       <h1>Pedir Insumos</h1>
-      <p>Tu pedido debe ser para 30 días en Interior y estara sujeto a Stock disponible</p>
+      <p>Tu pedido debe ser para 30 días en Interior y estará sujeto a Stock disponible</p>
       <div className={styles.formGroup}>
         <select
           value={pedido.objetivo}
@@ -158,6 +159,13 @@ function PedidoInsumosPage() {
           </table>
         )}
       </div>
+      {/* Nuevo textarea para la nota */}
+      <textarea
+        className={styles.textArea}
+        placeholder="Añadir nota (opcional)"
+        value={pedido.nota}
+        onChange={(e) => setPedido({ ...pedido, nota: e.target.value })}
+      />
       <button className={styles.enviarButton} onClick={enviarPedido}>Enviar Pedido</button>
     </div>
   );
