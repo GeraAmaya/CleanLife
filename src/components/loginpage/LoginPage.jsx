@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import logo from '../../../img/logo.png'; 
+import cleaningSvg from '../../../img/cleaning.svg'; // Asegúrate de tener la imagen SVG
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -24,29 +25,35 @@ const LoginPage = ({ onLogin }) => {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <img src={logo} alt="Imagen de la Empresa" className={styles.logo} />
-      <h1 className={styles.title}>Gestión de Insumos</h1>
-      <form className={styles.loginForm} onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-      <button className={styles.pedirInsumosButton} onClick={handlePedirInsumos}>
-        Pedir Insumos
-      </button>
+    <div className={styles.container}>
+      <div className={styles.leftSide}>
+        <img src={logo} alt="Imagen de la Empresa" className={styles.logo} />
+        <h1 className={styles.title}>Gestión de Insumos</h1>
+        <form className={styles.loginForm} onSubmit={handleLogin}>
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <button type="submit">Iniciar Sesión</button>
+        </form>
+      </div>
+      <div className={styles.rightSide}>
+        <img src={cleaningSvg} alt="Operario de limpieza" className={styles.operarioImg} />
+        <h2 className={styles.operarioText}>¿Sos operario/a?</h2>
+        <button className={styles.pedirInsumosButton} onClick={handlePedirInsumos}>
+          Pedir Insumos
+        </button>
+      </div>
     </div>
   );
 };

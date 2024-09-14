@@ -1,35 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100..900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+.container {
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(to right, #A7BFE8, #6190E8);
+}
 
-.loginContainer {
+.leftSide, .rightSide {
+  width: 50%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: center;      
-  font-family: "Roboto Slab", serif;
-  height: 100vh;
   padding: 20px;
-  background: #6190E8;
-  background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8);
+}
+
+.leftSide {
+  background: linear-gradient(to right, #A7BFE8, #6190E8);
+}
+
+.rightSide {
   background: linear-gradient(to right, #A7BFE8, #6190E8);
 }
 
 .logo {
-  width: 350px;
+  width: 250px;
   margin-bottom: 10px;
+  max-width: 100%;
 }
 
-h1 {
+.title {
   font-family: "Kanit", sans-serif;
-  font-weight: 800;
-  font-style: oblique;
+  font-weight: 700;
   font-size: 2.5rem;
-  margin-bottom: 20px;
   color: #333;
+  text-align: center;
 }
 
-form {
+.loginForm {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -42,7 +51,6 @@ input {
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
-  outline: none;
 }
 
 button {
@@ -59,16 +67,10 @@ button:hover {
   background-color: #0056b3;
 }
 
-.link {
-  margin-top: 15px;
-  font-size: 1rem;
-  text-align: center;
-}
-
 .pedirInsumosButton {
   margin-top: 20px;
   padding: 10px 20px;
-  width: 400px;
+  width: 200px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -81,32 +83,129 @@ button:hover {
   background-color: #0056b3;
 }
 
-@media (max-width: 768px) {
-  .loginContainer {
-    justify-content: flex-start; /* Asegura que el contenido esté alineado al inicio en pantallas pequeñas */
-    padding-top: 70px; /* Agrega espacio en la parte superior para que el contenido no esté tan pegado al borde superior */
+.operarioImg {
+  width: 350px;
+  margin-bottom: 20px;
+}
+
+.operarioText {
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 2.3rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .leftSide, .rightSide {
+    width: 100%;
+    padding: 10px;
   }
 
   .logo {
-    width: 250px; /* Reducir tamaño del logo en pantallas pequeñas */
+    width: 350px;
+    max-width: 100%;
   }
 
-  h1 {
-    font-size: 2rem; /* Reducir tamaño del título en pantallas pequeñas */
+  .title {
+    font-size: 2rem;
   }
 
-  form {
-    max-width: 90%; /* Ajustar el ancho del formulario en pantallas pequeñas */
+  .loginForm {
+    max-width: 90%;
   }
 
-  button {
-    font-size: 1rem;
-    padding: 8px;
+  .operarioImg {
+    width: 200px;
+  }
+
+  .operarioText {
+    font-size: 1.3rem;
   }
 
   .pedirInsumosButton {
+    width: 100%;
     font-size: 1rem;
-    padding: 8px 16px;
-    width: 90%;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .leftSide, .rightSide {
+    width: 100%;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .logo {
+    width: 150px;
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .loginForm {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .operarioImg {
+    width: 150px;
+  }
+
+  .operarioText {
+    font-size: 1.2rem;
+  }
+
+  .pedirInsumosButton {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .leftSide, .rightSide {
+    width: 100%;
+    padding: 10px;
+    align-items: center;
+  }
+
+  .logo {
+    width: 180px;
+   
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .loginForm {
+    max-width: 90%;
+    margin: 0 auto;
+  }
+
+  .operarioImg {
+    width: 180px;
+  }
+
+  .operarioText {
+    font-size: 1.3rem;
+  }
+
+  .pedirInsumosButton {
+    width: 60%;
+    font-size: 0.8rem;
+    padding: 8px;
   }
 }
