@@ -9,6 +9,7 @@ function StockPage() {
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({ name: '', quantity: '' });
   const [editProduct, setEditProduct] = useState({ id: '', name: '', quantity: '' });
+  const [searchTerm, setSearchTerm] = useState(''); // Estado para el buscador
 
   useEffect(() => {
     fetchStock();
@@ -47,9 +48,24 @@ function StockPage() {
     Swal.fire('Producto eliminado', '', 'success');
   };
 
+  // Filtrar productos por el término de búsqueda
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.container}>
       <h1>Gestión de Stock en Deposito</h1>
+      
+      {/* Buscador */}
+      <input
+        type="text"
+        placeholder="Buscar producto"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.editForm}
+      />
+      
       <div className={styles.form}>
         <input
           type="text"
@@ -65,6 +81,7 @@ function StockPage() {
         />
         <button onClick={handleAddProduct}>Agregar Producto</button>
       </div>
+
       <div className={styles.editForm}>
         {editProduct.id && (
           <>
@@ -84,6 +101,7 @@ function StockPage() {
           </>
         )}
       </div>
+
       <div className={styles.stockTable}>
         <table>
           <thead>
@@ -94,13 +112,13 @@ function StockPage() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <tr key={product.id}>
                 <td>{product.name}</td>
                 <td>{product.quantity}</td>
                 <td>
-                      <img src={editIcon} alt="Editar" onClick={() => handleEditClick(product)} className={styles.icon} />
-                      <img src={deleteIcon} alt="Eliminar" onClick={() => handleDeleteProduct(product.id)} className={styles.icon} />
+                  <img src={editIcon} alt="Editar" onClick={() => handleEditClick(product)} className={styles.icon} />
+                  <img src={deleteIcon} alt="Eliminar" onClick={() => handleDeleteProduct(product.id)} className={styles.icon} />
                 </td>
               </tr>
             ))}

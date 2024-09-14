@@ -7,7 +7,7 @@ import LOGO from '../../../img/logo.png'; // Asegúrate de que la ruta es correc
 import download from '../../../img/download.svg'
 import styles from './BuscarPedidosPage.module.css';
 
-const objetivos = ['Banco Nación- El Calafate', 'Banco Nación- Rio Gallegos', 'Banco Nación- Rio Turbio', 'Banco Nación- Caleta Olivia', 'Banco Nación- P.Deseado', 'Banco Nación- Las Heras', 'Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'Banco Nación - Piedra Buena', 'Banco Nación - Pico Truncado', 'Banco Nación - Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto', 'Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
+const objetivos = ['Banco Nación- El Calafate', 'Banco Nación- Rio Gallegos', 'Banco Nación- Rio Turbio', 'Banco Nación- Caleta Olivia', 'Banco Nación- P.Deseado', 'Banco Nación- Las Heras', 'Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'Banco Nación - Piedra Buena', 'Banco Nación - Pico Truncado', 'Banco Nación - Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto', 'Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'Cruz Del Sur','CityBus', 'Enargas'];
 
 const BuscarPedidosPage = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -28,19 +28,22 @@ const BuscarPedidosPage = () => {
 
   const handleDownload = (pedido) => {
     const doc = new jsPDF();
-    
+  
     // Añadir el logo
     const logoWidth = 50;
     const logoHeight = 25;
     doc.addImage(LOGO, 'PNG', 10, 10, logoWidth, logoHeight);
-
+  
     // Título
     doc.setFontSize(16);
     doc.text(`Pedido para: ${pedido.objetivo}`, 10, logoHeight + 20);
-    //doc.text(`Fecha: ${new Date(pedido.fecha.toDate()).toLocaleDateString()}`, 10, logoHeight + 30);
-
+  
+    // Campo de Fecha vacío (manual para completar)
+    doc.setFontSize(12);
+    doc.text('Fecha: ___/___/____', 10, logoHeight + 30);
+  
     // Datos del pedido en tabla
-    const tableData = pedido.productos.map(producto => [producto.producto, producto.cantidad]);
+    const tableData = pedido.productos.map(producto => [producto.producto, producto.cantidad > 0 ? producto.cantidad : 0]);
     doc.autoTable({
       startY: logoHeight + 40,
       head: [['Producto', 'Cantidad']],
@@ -48,16 +51,16 @@ const BuscarPedidosPage = () => {
       theme: 'grid', // Opcional: 'striped', 'grid', 'plain'
       margin: { horizontal: 10 }
     });
-
+  
     // Añadir el apartado para firma
     const finalY = doc.lastAutoTable.finalY;
     doc.setFontSize(12);
     doc.text('Firma Operario:', 10, finalY + 50);
-    
-
+  
     // Guardar el PDF
     doc.save(`Pedido_${pedido.objetivo}_${pedido.id}.pdf`);
   };
+  
 
   return (
     <div className={styles.buscarPedidosContainer}>
@@ -94,7 +97,7 @@ const BuscarPedidosPage = () => {
                   <td>
                     <ul>
                       {pedido.productos.map((producto, index) => (
-                        <li key={index}>{producto.producto}: {producto.cantidad}</li>
+                        <li key={index}>{producto.producto}:{producto.cantidad}</li>
                       ))}
                     </ul>
                   </td>
