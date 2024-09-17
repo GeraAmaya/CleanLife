@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginPage.module.css';
 import logo from '../../../img/logo.png'; 
-import cleaningSvg from '../../../img/cleaning.svg'; // Asegúrate de tener la imagen SVG
+import cleaningSvg from '../../../img/cleaning1.svg'; // Asegúrate de tener la imagen SVG
 
 const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState('');

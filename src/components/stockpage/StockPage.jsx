@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { getStock, addProduct, updateProduct, deleteProduct } from '../../helpers/firebase';
 import editIcon from '../../../img/edit.svg';
 import deleteIcon from '../../../img/delete.svg';
+import stockIcon from '../../../img/stock.svg'; // Asegúrate de tener este archivo en la ruta adecuada
 
 function StockPage() {
   const [products, setProducts] = useState([]);
