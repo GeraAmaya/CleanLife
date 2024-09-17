@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './layout';
-import { HomePage, StockPage, EnviosPage, ReportsPage, LoginPage, PedidoInsumosPage, BuscarPedidosPage } from './helpers/PathRoutes';
+import {  StockPage, EnviosPage, ReportsPage, LoginPage, PedidoInsumosPage, BuscarPedidosPage } from './helpers/PathRoutes';
 
 // Componente para proteger rutas
 function ProtectedRoute({ isAuthenticated, children }) {

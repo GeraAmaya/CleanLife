@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { getStock, addShipment, updateProduct } from '../../helpers/firebase';
 import styles from './EnviosPage.module.css';
 
-const objectives = ['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'ARSA - Aeropuerto', 'El Calafate', 'Triunfo Seguros', 'CityBus', 'Enargas'];
+const objectives = ['Banco Nación- El Calafate','Banco Nación- Rio Gallegos','Banco Nación- Rio Turbio','Banco Nación- Caleta Olivia','Banco Nación- P.Deseado','Banco Nación- Las Heras','Banco Nación- San Julian', 'Banco Nación- 28 Noviembre','Banco Nación - Piedra Buena','Banco Nación - Pico Truncado','Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto', 'Triunfo Seguros', 'CityBus', 'Enargas','Cruz Del Sur'];
 
 function EnviosPage() {
   const [products, setProducts] = useState([]);

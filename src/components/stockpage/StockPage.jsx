@@ -10,6 +10,7 @@ function StockPage() {
   const [newProduct, setNewProduct] = useState({ name: '', quantity: '' });
   const [editProduct, setEditProduct] = useState({ id: '', name: '', quantity: '' });
   const [searchTerm, setSearchTerm] = useState(''); // Estado para el buscador
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para el modal
 
   useEffect(() => {
     fetchStock();
@@ -26,6 +27,7 @@ function StockPage() {
       fetchStock();
       Swal.fire('Producto agregado', '', 'success');
       setNewProduct({ name: '', quantity: '' });
+      setIsModalOpen(false); // Cerrar el modal después de agregar
     }
   };
 
@@ -55,8 +57,8 @@ function StockPage() {
 
   return (
     <div className={styles.container}>
-      <h1>Gestión de Stock en Deposito</h1>
-      
+      <h1>Gestión de Stock en Depósito</h1>
+
       {/* Buscador */}
       <input
         type="text"
@@ -65,22 +67,33 @@ function StockPage() {
         onChange={(e) => setSearchTerm(e.target.value)}
         className={styles.editForm}
       />
-      
-      <div className={styles.form}>
-        <input
-          type="text"
-          placeholder="Nombre del Producto"
-          value={newProduct.name}
-          onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Cantidad"
-          value={newProduct.quantity}
-          onChange={(e) => setNewProduct({ ...newProduct, quantity: e.target.value })}
-        />
-        <button onClick={handleAddProduct}>Agregar Producto</button>
-      </div>
+
+      {/* Botón para abrir el modal de agregar producto */}
+      <button onClick={() => setIsModalOpen(true)} className={styles.addButton}>Agregar Producto</button>
+
+      {/* Modal para agregar producto */}
+{isModalOpen && (
+  <div className={styles.modal}>
+    <div className={styles.modalContent}>
+      <span className={styles.close} onClick={() => setIsModalOpen(false)}>&times;</span> {/* Cerrar modal */}
+      <h2>Nuevo Producto</h2>
+      <input
+        type="text"
+        placeholder="Nombre del Producto"
+        value={newProduct.name}
+        onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+      />
+      <input
+        type="number"
+        placeholder="Cantidad"
+        value={newProduct.quantity}
+        onChange={(e) => setNewProduct({ ...newProduct, quantity: e.target.value })}
+      />
+      <button onClick={handleAddProduct}>Agregar Producto</button>
+    </div>
+  </div>
+)}
+
 
       <div className={styles.editForm}>
         {editProduct.id && (
