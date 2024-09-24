@@ -30,6 +30,13 @@ function EnviosPage() {
     }
   };
 
+  const handleRemoveProduct = (index) => {
+    setNewShipment(prevState => ({
+      ...prevState,
+      items: prevState.items.filter((_, i) => i !== index)  // Elimina el producto de la lista por índice
+    }));
+  };
+
   const handleAddShipment = async () => {
     if (newShipment.objective && newShipment.items.length > 0) {
       let isStockAvailable = true;
@@ -120,6 +127,7 @@ function EnviosPage() {
           <div key={index} className={styles.shipmentItem}>
             <span>{item.product}</span>
             <span>{item.quantity}</span>
+            <button className={styles.deletButon} onClick={() => handleRemoveProduct(index)}>Eliminar</button> {/* Botón para eliminar */}
           </div>
         ))}
       </div>

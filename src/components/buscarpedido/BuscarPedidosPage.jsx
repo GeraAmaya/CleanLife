@@ -7,7 +7,7 @@ import LOGO from '../../../img/logo.png'; // Asegúrate de que la ruta es correc
 import download from '../../../img/download.svg'
 import styles from './BuscarPedidosPage.module.css';
 
-const objetivos = ['Banco Nación- El Calafate', 'Banco Nación- Rio Gallegos', 'Banco Nación- Rio Turbio', 'Banco Nación- Caleta Olivia', 'Banco Nación- P.Deseado', 'Banco Nación- Las Heras', 'Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'Banco Nación - Piedra Buena', 'Banco Nación - Pico Truncado', 'Banco Nación - Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto', 'Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'Cruz Del Sur','CityBus', 'Enargas'];
+const objetivos = ['Banco Nación- El Calafate', 'Banco Nación- Rio Gallegos', 'Banco Nación- Rio Turbio', 'Banco Nación- Caleta Olivia', 'Banco Nación- P.Deseado', 'Banco Nación- Las Heras', 'Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'Banco Nación - Piedra Buena', 'Banco Nación - Pico Truncado', 'Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC', 'Aeropuerto', 'Pico Truncado', 'El Calafate', 'Triunfo Seguros', 'Cruz Del Sur','CityBus', 'Enargas'];
 
 const BuscarPedidosPage = () => {
   const [pedidos, setPedidos] = useState([]);
