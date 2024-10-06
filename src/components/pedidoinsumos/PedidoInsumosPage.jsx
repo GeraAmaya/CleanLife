@@ -6,6 +6,7 @@ import { collection, query, where, getDocs, addDoc, Timestamp } from 'firebase/f
 import { db } from '../../helpers/firebase';
 import styles from './PedidoInsumosPage.module.css';
 import logo from '../../../img/logo.png';
+import deleteIcon from '../../../img/delete.svg'; // Asegúrate de tener un ícono de eliminar
 
 const productos = ['Detergente', 'Lavandina (Sobre)', 'Lavandina Gel', 'Limpia Vidrio (Sobre)', 'Desengrasante (Sobre)', 'Jabón Liquido','Jabón Blanco Barra', 'CIF Crema', 'Lisoform', 'Esponja Cocina', 'Esponja de Acero', 'Liquido para piso (Sobre)', 'Liquido Limp. Aeronautico', 'Rejillas', 'Trapos de piso', 'Franelas', 'Lustramueble', 'Desodorante de ambientes', 'Papel Higienico X UNID.', 'Papel - Bobina', ' Cervilletas intercaladas', 'Bolsas 45 x 60', 'Bolsas 60 x 90', 'Bolsas 90 x 110', 'Bolsas Cristal 90 x 110', 'Balde', 'Balde con escurridor', 'Escobillon', 'Pala plastica', 'Mopa', 'Cabo de Madera', 'Cera Roja','Cera Roble', 'Cera Natural', 'Guantes Talle G', 'Guantes Talle M', 'Plumero',"Cepillo barredor grande"];
 const objetivos = ['Banco Nación- El Calafate', 'Banco Nación- Rio Gallegos', 'Banco Nación- Rio Turbio', 'Banco Nación- Caleta Olivia', 'Banco Nación- P.Deseado', 'Banco Nación- Las Heras', 'Banco Nación- San Julian', 'Banco Nación- 28 Noviembre', 'Banco Nación - Piedra Buena', 'Banco Nación - Pico Truncado', 'Banco Nación - Pto Santa Cruz', 'IAF', 'IERIC',  'Aeropuerto', 'Triunfo Seguros', 'CityBus', 'Enargas', 'Cruz Del Sur'];
@@ -26,7 +27,7 @@ function PedidoInsumosPage() {
         const q = query(
           collection(db, 'pedidos'),
           where('objetivo', '==', pedido.objetivo),
-          where('fecha', '>', Timestamp.fromDate(new Date(Date.now() - diasPermitidos * 24 * 60 * 60 * 1000)))
+          where('fecha', '>=', Timestamp.fromDate(new Date(Date.now() - diasPermitidos * 24 * 60 * 60 * 1000)))
         );
         const querySnapshot = await getDocs(q);
 
@@ -51,7 +52,16 @@ function PedidoInsumosPage() {
         productos: [...prevState.productos, { ...productoSeleccionado, cantidad: Number(productoSeleccionado.cantidad) }]
       }));
       setProductoSeleccionado({ producto: '', cantidad: '' });
+    } else {
+      Swal.fire('Error', 'Por favor, selecciona un producto y cantidad.', 'error');
     }
+  };
+
+  const eliminarProducto = (index) => {
+    setPedido(prevState => ({
+      ...prevState,
+      productos: prevState.productos.filter((_, i) => i !== index)
+    }));
   };
 
   const enviarPedido = async () => {
@@ -73,7 +83,7 @@ function PedidoInsumosPage() {
 
             // Enviar el correo
             const emailData = {
-              localidad: pedido.localidad,
+              localidad: pedido.objetivo,
               objetivo: pedido.objetivo,
               productos: pedido.productos.map(p => `<li>Producto: ${p.producto}, Cantidad: ${p.cantidad}</li>`).join(''),
               nota: pedido.nota // Añadir la nota al email
@@ -137,7 +147,7 @@ function PedidoInsumosPage() {
           value={productoSeleccionado.cantidad}
           onChange={(e) => setProductoSeleccionado({ ...productoSeleccionado, cantidad: e.target.value })}
         />
-        <button onClick={agregarProducto}>Agregar Producto</button>
+        <button onClick={agregarProducto} className={styles.agregarButton}>Agregar Producto</button>
       </div>
       <div className={styles.productList}>
         {pedido.productos.length > 0 && (
@@ -146,6 +156,7 @@ function PedidoInsumosPage() {
               <tr>
                 <th>Producto</th>
                 <th>Cantidad</th>
+                <th>Eliminar</th>
               </tr>
             </thead>
             <tbody>
@@ -153,6 +164,15 @@ function PedidoInsumosPage() {
                 <tr key={index}>
                   <td>{item.producto}</td>
                   <td>{item.cantidad}</td>
+                  <td>
+                    <button 
+                      className={styles.deleteButton} 
+                      onClick={() => eliminarProducto(index)}
+                      aria-label="Eliminar Producto"
+                    >
+                      <img src={deleteIcon} alt="Eliminar" className={styles.deleteIcon} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
